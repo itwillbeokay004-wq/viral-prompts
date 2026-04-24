@@ -1,36 +1,43 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Viral Prompts
 
-## Getting Started
+A tiny Next.js app that generates viral video prompt ideas for TikTok and YouTube Shorts.
 
-First, run the development server:
+- Pick a **niche** (12 options) and **platform** (TikTok / YouTube Shorts)
+- Get 3–15 scroll-stopping video ideas in one click
+- **Hybrid generation**: uses OpenAI when `OPENAI_API_KEY` is set, falls back to a curated static library otherwise
+- One-click copy for individual prompts or the whole list
+
+## Stack
+
+- Next.js 16 (App Router)
+- React 19
+- Tailwind CSS v4
+- TypeScript
+- OpenAI Chat Completions API (optional)
+
+## Getting started
 
 ```bash
+npm install
+cp .env.example .env.local   # optional: add OPENAI_API_KEY
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Environment variables
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+| Name | Required | Description |
+| --- | --- | --- |
+| `OPENAI_API_KEY` | No | If set, `/api/generate` calls OpenAI. If unset or the call fails, the static library is served. |
+| `OPENAI_MODEL` | No | OpenAI model name. Defaults to `gpt-4o-mini`. |
 
-## Learn More
+## Project layout
 
-To learn more about Next.js, take a look at the following resources:
+- `src/app/page.tsx` — UI (niche + platform selectors, result list)
+- `src/app/api/generate/route.ts` — POST endpoint, AI-with-fallback
+- `src/lib/prompts.ts` — niches, platforms, and the curated static library
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Deploy
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Deploys cleanly to Vercel. Set `OPENAI_API_KEY` in the Vercel project if you want AI mode.
